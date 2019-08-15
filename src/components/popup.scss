@@ -1,0 +1,54 @@
+.popup {
+  &__container {
+    width: 900px;
+    height: 80px;
+    background: linear-gradient(to right, (#833471), (#b53471));
+    left: 15%;
+    color: white;
+    border-radius: 10px;
+    border: 2px solid white;
+    box-shadow: 3px 4px 10px lightgray;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  &__section {
+    display: grid;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    span {
+      font-size: 70%;
+      font-weight: 700;
+    }
+    &:not(:last-child) {
+      //   border-right: 1px solid black;
+    }
+  }
+}
+
+.visible {
+  //   display: block;
+  bottom: 0;
+  transition: all 10.4s cubic-bezier(0.075, 0.82, 0.165, 1);
+
+  animation: toast-disappear 0.5s !important;
+}
+
+@keyframes toast-appear {
+  from {
+    bottom: -150px;
+  }
+  to {
+    bottom: 0;
+  }
+}
+
+@keyframes toast-disappear {
+  from {
+    bottom: 0;
+  }
+  to {
+    right: -150px;
+  }
+}
