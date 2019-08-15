@@ -1,13 +1,14 @@
 import React from "react"
-import Tree from "react-d3-tree"
 import BST from "../bst"
 import "./tree-style.scss"
 import Range from "./Range"
 import Popup from "./Popup"
 import "./popup.scss"
 import toaster from "toasted-notes"
+let Tree = " "
 class BSTree extends React.Component {
   state = {
+    treeLoaded: false,
     zoomLevel: 0.2,
     duration: 2049,
     popupVisible: false,
@@ -27,7 +28,11 @@ class BSTree extends React.Component {
   toast = {}
   async componentDidMount() {
     const dimensions = this.treeContainer.getBoundingClientRect()
+    let res = await import("react-d3-tree")
+    Tree = res.Tree
+
     this.setState({
+      treeLoaded: true,
       translate: {
         x: dimensions.width / 2,
         y: 30,
@@ -143,11 +148,6 @@ class BSTree extends React.Component {
     })
   }
 
-  //   hideToast = () => {
-  //     console.log("th toast", this.toast)
-  //     this.toast.removeToast(this.toast.id)
-  //   }
-
   showToast = () => {
     const { popupVisible, inOrder, preOrder, postOrder } = this.state
 
@@ -172,8 +172,7 @@ class BSTree extends React.Component {
   }
 
   render() {
-    const { canTraverse } = this.state
-    console.log("the stuff is ", this.state)
+    const { canTraverse, treeLoaded } = this.state
     return (
       <div>
         <div className="graph__page">
@@ -239,20 +238,22 @@ class BSTree extends React.Component {
                 ref={tc => (this.treeContainer = tc)}
                 style={{ height: "500px" }}
               >
-                <Tree
-                  pathFunc="straight"
-                  data={this.state.treeData}
-                  orientation="vertical"
-                  translate={this.state.translate}
-                  transitionDuration={this.state.duration}
-                  nodeSize={{ x: 120, y: 70 }}
-                  zoomable={true}
-                  zoom={this.state.zoomLevel}
-                  scaleExtent={{
-                    min: 1,
-                    max: this.state.zoomLevel,
-                  }}
-                />
+                {treeLoaded && (
+                  <Tree
+                    pathFunc="straight"
+                    data={this.state.treeData}
+                    orientation="vertical"
+                    translate={this.state.translate}
+                    transitionDuration={this.state.duration}
+                    nodeSize={{ x: 120, y: 70 }}
+                    zoomable={true}
+                    zoom={this.state.zoomLevel}
+                    scaleExtent={{
+                      min: 1,
+                      max: this.state.zoomLevel,
+                    }}
+                  />
+                )}
               </div>
             </div>
           </div>
