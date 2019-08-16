@@ -35,20 +35,20 @@ export default function BST(value) {
     callback(_this.value)
 
     if (_this.left) {
-      _this.left.inOrder(callback)
+      _this.left.preOrder(callback)
     }
 
     if (_this.right) {
-      _this.right.inOrder(callback)
+      _this.right.preOrder(callback)
     }
   }
 
   this.postOrder = function(callback) {
     if (_this.right) {
-      _this.right.inOrder(callback)
+      _this.right.postOrder(callback)
     }
     if (_this.left) {
-      _this.left.inOrder(callback)
+      _this.left.postOrder(callback)
     }
     callback(_this.value)
   }
