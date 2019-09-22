@@ -97,7 +97,6 @@ class BSTree extends React.Component {
   }
 
   makeData = (input = []) => {
-    console.log("we are making dta")
     const bst = new BST(input[0])
     input.slice(1).forEach(item => bst.insert(item))
 
@@ -134,7 +133,15 @@ class BSTree extends React.Component {
 
   updateArray = e => {
     e.preventDefault()
-    const array = this.state.inputText.split(",").map(item => parseInt(item))
+    const { inputText } = this.state
+    let array
+
+    console.log("type of ", typeof inputText[0])
+    if (typeof inputText[0] === "number") {
+      array = this.state.inputText.split(",").map(item => parseInt(item))
+    } else {
+      array = this.state.inputText.split(",")
+    }
     this.makeData(array)
   }
   zoomChange = e => {
