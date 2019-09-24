@@ -82,3 +82,12 @@ input .tree-input {
   border-radius: 6px;
   border: none;
 }
+
+
+.node {
+  &.reset{
+    circle {
+      fill:#832a3e !important;
+    }
+  }
+}
