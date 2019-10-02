@@ -1,11 +1,12 @@
 import React from "react"
 import "./tree-style.scss"
 import "./popup.scss"
-import Link from "./Link"
+import Edge from "./Link"
 import Node from "./Node"
 import {FORCE} from "../lib/d3.helpers"
 import { Graph } from "../lib/graph.ds"
 import {isEqual} from "lodash"
+import { Link } from "gatsby"
 
 let Tree = " "
 class GraphDS extends React.Component {
@@ -17,6 +18,8 @@ class GraphDS extends React.Component {
       addLinkArray: [],
       name: "",
       search:'BFS',
+      traversedString:"",
+      traversedNodes:[],
       nodes:
         [
 
@@ -43,7 +46,7 @@ class GraphDS extends React.Component {
     if (!isEqual(prevState, this.state)) {
       const data = this.state;
       FORCE.initForce(data.nodes, data.links);
-      FORCE.tick(this, this.graphImplementation, data.search);
+      FORCE.tick(this, this.graphImplementation, data.search, this.printNodes);
       FORCE.drag();
     }
   }
@@ -91,11 +94,20 @@ class GraphDS extends React.Component {
 
     })})
   };
+
+  printNodes = (node)=>{
+    this.setState(state=>{
+      return {
+        ...state,
+        traversedString: `${state.traversedString}, ` + node
+      }
+    })
+  }
   render() {
     const {links, nodes } = this.state;
     const linksView = links.map( (link) => {
       return (
-        <Link
+        <Edge
           key={`${link.source}-${link.target}`}
           data={link}
         />);
@@ -108,13 +120,17 @@ class GraphDS extends React.Component {
           key={node.id}
         />);
     });
-    const {source, target } = this.state;
+    const {source, target, search , traversedString } = this.state;
     return (
       <div>
         <div className="graph__page">
           <div className="graph__header">
             <div className="graph__header-left">
               <h3>DS & Algorithm Playground </h3>
+              <ul>
+                <li><Link  activeClassName="active-link"to={"/"}>Binary Search Tree <i className="icon ion-analytics"/></Link></li>
+                <li><Link activeClassName="active-link" to={"/graph"}>Graph</Link></li>
+              </ul>
             </div>
           </div>
           <div className="graph__body">
@@ -124,7 +140,7 @@ class GraphDS extends React.Component {
               </h4>
               <div className="config__container">
                 <form className="add-panel" onSubmit={this.addNode}>
-                  <p>
+                  <p className="field">
                     Input
                     <input
                       className="tree-input"
@@ -139,26 +155,29 @@ class GraphDS extends React.Component {
                 </form>
 
                 <form  className="add-panel" onSubmit={this.onAddEdgeSubmitted}>
-                  <p>
-                    Add Edge
-                    <select  name="source" id="source" value={source} onChange={this.edgeSelected}>
+                  <p className="field ">
+                    <div className="select-fields">
+                        <select  name="source" id="source" value={source} onChange={this.edgeSelected}>
                       <option value="Source Node">Source Node</option>
-                      {
-                        this.renderOptions(nodes)
-                      }
+                          {
+                            this.renderOptions(nodes)
+                          }
                     </select>
                     <select name="target" disabled={source === "Source Node" || source === ""} id="target" value={target} onChange={this.edgeSelected}>
-                      <option value="Source Node">Source Node</option>
+                      <option value="Target Node">Target Node</option>
                       {
                         this.renderOptions(nodes)
                       }
                     </select>
+                    </div>
+
 
                     <button className="generate-button" disabled={source === "Source Node" || source === ""}>Add Edge</button>
                   </p>
 
                 </form>
-                <div className="search__buttons">
+                <div className="search__buttons field">
+
                   <button className="generate-button" onClick={()=>this.setState(state=>({...state, search: 'BFS'}))}>BFS</button>
                   <button className="generate-button" onClick={()=>this.setState(state=>({...state, search: 'DFS'}))}>DFS</button>
                 </div>
@@ -167,12 +186,13 @@ class GraphDS extends React.Component {
             </div>
             <div className="graph__body-main">
               <h4 className="panel__header">
-                Graph DS <i className="icon ion-md-funnel"/>
+                Graph DS <i className="icon ion-md-funnel"/> {search === "BFS" ? "BREADTH FIRST SEARCH ": "DEPTH FIRST SEARCH "}
               </h4>
               <div
                 ref={tc => (this.treeContainer = tc)}
                 style={{ height: "500px" }}
               >
+                {/*<div>{traversedString}</div>*/}
                 <svg className="graph" width={FORCE.width} height={FORCE.height}>
                   {/*<defs>*/}
                   {/*  <marker viewBox="0 -5 24 10" id="markerArrow" markerWidth="10" markerHeight="7" refX="20.4"  orient="auto" markerUnits="strokeWidth">*/}

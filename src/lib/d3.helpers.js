@@ -66,13 +66,7 @@ export var FORCE = (function(nsp){
            return +d3.select(d).data()[0].name === +name
         })
       },
-      reset = selection =>{
-          selection.selectAll('.node').select("circle").each(d=>{
-              console.log("the stuff ", d.classed("samaki", true))
-           // return d3.select(d).style("fill", '#832a3e' )
-          })
-      },
-        updateGraph = (selection, graph, search) => {
+        updateGraph = (selection, graph, search, printCallback) => {
             const group = selection.selectAll('.node')
               group.classed("reset",false);
               group.on("click", function(d){
@@ -82,9 +76,9 @@ export var FORCE = (function(nsp){
                 let count = 0;
 
                       if(search === "BFS"){
-                        console.log("the search method in bfs is  ", search)
                         graph.bfs(d.name, v=>{
                           const foundDatum = getDatum(allNodes, v)
+                          printCallback(v)
                           console.log("next node should be ", v, d3.select(foundDatum).data()[0])
                           d3.select(foundDatum)
                             .transition().duration(3000).delay((dat,i)=>{
@@ -92,7 +86,6 @@ export var FORCE = (function(nsp){
                             console.log("the count ", count)
                             return  count*500
                           })
-                          // .style("fill","red")
                             .style("fill","#189b7a")
 
 
@@ -101,7 +94,7 @@ export var FORCE = (function(nsp){
                         console.log("the search method in DFS is  ", search)
                         graph.dfs(d.name, v=>{
                           const foundDatum = getDatum(allNodes, v)
-                          console.log("next node should be in DFS ", v)
+                          printCallback(v)
                           d3.select(foundDatum)
                             .transition().duration(3000).delay((dat,i)=>{
                             count ++
@@ -158,10 +151,10 @@ export var FORCE = (function(nsp){
                 .on("end", dragEnded)
             ),
 
-        tick = (that, graphImplementation, search) => {
+        tick = (that, graphImplementation, search, printCallback) => {
             that.d3Graph = d3.select(ReactDOM.findDOMNode(that));
             nsp.force.on('tick', () => {
-                that.d3Graph.call((e)=>updateGraph(e, graphImplementation,search ))
+                that.d3Graph.call((e)=>updateGraph(e, graphImplementation,search , printCallback))
             });
 
         };
@@ -179,7 +172,6 @@ export var FORCE = (function(nsp){
     nsp.dragEnded = dragEnded;
     nsp.drag = drag;
     nsp.tick = tick;
-    nsp.reset = reset;
 
 
     return nsp

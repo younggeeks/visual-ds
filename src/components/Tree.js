@@ -5,6 +5,7 @@ import Range from "./Range"
 import Popup from "./Popup"
 import "./popup.scss"
 import toaster from "toasted-notes"
+import { Link } from "gatsby"
 let Tree = " "
 class BSTree extends React.Component {
   state = {
@@ -185,7 +186,11 @@ class BSTree extends React.Component {
         <div className="graph__page">
           <div className="graph__header">
             <div className="graph__header-left">
-              <h3>BST Playground </h3>
+              <h3>DS & Algorithm Playground </h3>
+              <ul>
+                <li><Link activeClassName="active-link" to="/">Binary Search Tree</Link></li>
+                <li><Link activeClassName="active-link"  to="/graph">Graph</Link></li>
+              </ul>
             </div>
           </div>
           <div className="graph__body">
