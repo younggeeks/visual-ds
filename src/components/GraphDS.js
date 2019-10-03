@@ -20,6 +20,7 @@ class GraphDS extends React.Component {
       search:'BFS',
       traversedString:"",
       traversedNodes:[],
+      graphType:"UNDIRECTED",
       nodes:
         [
 
@@ -120,7 +121,7 @@ class GraphDS extends React.Component {
           key={node.id}
         />);
     });
-    const {source, target, search , traversedString } = this.state;
+    const {source, target, search , traversedString , graphType} = this.state;
     return (
       <div>
         <div className="graph__page">
@@ -194,11 +195,14 @@ class GraphDS extends React.Component {
               >
                 {/*<div>{traversedString}</div>*/}
                 <svg className="graph" width={FORCE.width} height={FORCE.height}>
-                  {/*<defs>*/}
-                  {/*  <marker viewBox="0 -5 24 10" id="markerArrow" markerWidth="10" markerHeight="7" refX="20.4"  orient="auto" markerUnits="strokeWidth">*/}
-                  {/*    <path d="M0,-5L10,0L0,5" fill="black" />*/}
-                  {/*  </marker>*/}
-                  {/*</defs>*/}
+                  {
+                    graphType === "DIRECTED" && ( <defs>
+                      <marker viewBox="0 -5 24 10" id="markerArrow" markerWidth="10" markerHeight="7" refX="20.4"  orient="auto" markerUnits="strokeWidth">
+                        <path d="M0,-5L10,0L0,5" fill="black" />
+                      </marker>
+                    </defs>)
+                  }
+
                   <g>
                     {linksView}
                   </g>
