@@ -1,14 +1,9 @@
 
-<p align="center">
-  <a href="https://www.gatsbyjs.org">
-    <img alt="DS" src="sample.gif"/>
-  </a>
-</p>
-<h1 align="center">
-  DS & Algorithm Playground( Trees & Graphs)
-</h1>
+![OVERVIEW](https://github.com/younggeeks/visual-ds/blob/master/sample.gif)
 
-Practice Data structures and Algorithms Visually 
+ # DS & Algorithm Playground( Trees & Graphs)
+
+ #####  🏆 Practice Data structures and Algorithms Visually 
 
 ## 🎉 Supported Data Structures
 
@@ -21,5 +16,4 @@ Practice Data structures and Algorithms Visually
     - Add Edges 
 
 
-
-### Created with Love by Samwel Charles 
+ Created with ❤️ by Samwel Charles 
